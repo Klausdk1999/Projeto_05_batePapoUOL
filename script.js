@@ -1,5 +1,4 @@
 //elementoQueQueroQueApareca.scrollIntoView();
-
 function join(){
     document.querySelector(".feed").innerHTML+=`
     <div class="messageBox grey">
@@ -24,6 +23,10 @@ function messageAll(){
         <h1><strong>fulano</strong> para <strong>todos</strong>: mensagem </h1>
     </div>`
 }
+private();
+messageAll();
+leave();
+join();
 join();
 private();
 messageAll();

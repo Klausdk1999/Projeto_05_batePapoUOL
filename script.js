@@ -1,4 +1,15 @@
-//elementoQueQueroQueApareca.scrollIntoView();
+//elementoQueQueroQueApareca.scrollIntoView(); query selector innerhtml= entao scroll
+let user;
+
+function login(){
+    document.querySelector(".feed").innerHTML=`
+    <div class="loginScreen">
+        <img src="media/logo 1.png" alt="">
+        <input placeholder="Digite seu nome" type="text">
+        <button type="button">Entrar</button>
+    </div>`
+
+}
 function join(){
     document.querySelector(".feed").innerHTML+=`
     <div class="messageBox grey">
@@ -23,27 +34,12 @@ function messageAll(){
         <h1><strong>fulano</strong> para <strong>todos</strong>: mensagem </h1>
     </div>`
 }
-private();
-messageAll();
-leave();
-join();
-join();
-private();
-messageAll();
-join();
-leave();
-private();
-messageAll();
-leave();
-leave();
-private();
-messageAll();
-leave();
-join();
-private();
-messageAll();
-join();
-join();
-private();
-messageAll();
-leave();
+
+login();
+// private();
+// messageAll();
+// leave();
+// join();
+// join();
+// private();
+// messageAll();

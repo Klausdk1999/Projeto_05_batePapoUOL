@@ -53,9 +53,11 @@ ion-icon{
   margin-left: 7px;
 } 
 .feed{
+  margin-top: 100px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+  height: 10%;
 }
 .messageBox{
   display: flex;

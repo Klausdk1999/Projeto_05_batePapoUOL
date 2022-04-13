@@ -30,10 +30,8 @@ function loop(){
         let promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
         promise.then(printMessages);
         loop();
-    }, 5000); 
-    
+    }, 3000);   
 }
-
 function printMessages(message){
     document.querySelector(".feed").innerHTML=``;
     for(let i=0;i<message.data.length;i++){
@@ -56,11 +54,14 @@ function joinLeaveHTML(a,i){
     document.getElementById(i).scrollIntoView();
 }
 function privateHTML(a,i){
-    document.querySelector(".feed").innerHTML+=`
-    <div id="${i}"class="messageBox pink">
-        <h2>(${a.time})</h2><h1> <strong>${a.from}</strong> reservadamente para <strong>${a.to}</strong>: ${a.text}</h1>
-    </div>`
-    document.getElementById(i).scrollIntoView();
+    if(a.to=="Todos" ||a.to==username){
+        document.querySelector(".feed").innerHTML+=`
+        <div id="${i}"class="messageBox pink">
+            <h2>(${a.time})</h2><h1> <strong>${a.from}</strong> reservadamente para <strong>${a.to}</strong>: ${a.text}</h1>
+        </div>`
+        document.getElementById(i).scrollIntoView();
+    }
+    
 }
 function messageAllHTML(a,i){
     document.querySelector(".feed").innerHTML+=`
@@ -93,12 +94,13 @@ function listHTML(user){
             <ion-icon name="person-circle"></ion-icon>
             <h1> ${user.data[i].name}</h1>
             </div>
-            <ion-icon class="displayNone"id="checkmark" name="checkmark"></ion-icon>
+            <ion-icon class=""id="checkmark" name="checkmark"></ion-icon>
         </div>`;
     } 
 }
 function selectUserToSend(element){
-    element.querySelector(".checkmark").classList.toggle("checkmark");
+   // element.querySelector(".displayNone").classList.toggle("displayNone");
+
 }
 function private(element){
     selectUserToSend(element);

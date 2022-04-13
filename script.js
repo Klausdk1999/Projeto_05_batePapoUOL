@@ -1,10 +1,13 @@
 //elementoQueQueroQueApareca.scrollIntoView(); query selector innerhtml= entao scroll
 let user;
 let username;
+let data={
+    name: ""
+};
 let array=[];
 function joinChat(){
     username=document.getElementById("usernameInput").value;
-    let data={
+    data={
         name: username
     };
     let promise=axios.post('https://mock-api.driven.com.br/api/v6/uol/participants',data);
@@ -20,50 +23,66 @@ function fail(error){
 function success(){
     document.getElementById("loginScreen").style.display="none";
     console.log("success");
-    joinHTML();
-    privateHTML();
-    joinHTML();
-    privateHTML();
-    messageAllHTML();
-    messageAllHTML();
+    // joinHTML();
+    // privateHTML();
+    // joinHTML();
+    // privateHTML();
+    // messageAllHTML();
+    // messageAllHTML();
     loop();
 }
 function loop(){
     setTimeout(function(){
-        axios.post('https://mock-api.driven.com.br/api/v6/uol/participants',data);
-        array = axios.get('http://mock-api.driven.com.br/api/v6/uol/messages');
+        axios.post('https://mock-api.driven.com.br/api/v6/uol/status',data);
+        let promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
+        promise.then(printMessages);
         loop();
-        printMessages();
     }, 5000); 
+    
 }
-function printMessages(){
-    for(let i=0;i<array.length;i++){
-        console.log(array[0].type);
+
+function printMessages(message){
+    document.querySelector(".feed").innerHTML=``;
+    for(let i=0;i<message.data.length;i++){
+        if(message.data[i].type=="status"){
+            joinLeaveHTML(message.data[i],i);
+        }
+        if(message.data[i].type=="message"){
+            messageAllHTML(message.data[i],i);
+        }
+        if(message.data[i].type=="private_message"){
+            privateHTML(message.data[i],i);
+        }
     }
 }
-function joinHTML(){
+function joinLeaveHTML(a,i){
     document.querySelector(".feed").innerHTML+=`
-    <div class="messageBox grey">
-        <h1><strong>fulano</strong> entrou no chat</h1>
+    <div id="${i}" class="messageBox grey">
+        <h2>(${a.time})</h2><h1> <strong>${a.from}</strong> ${a.text}</h1>
     </div>`
+    document.getElementById(i).scrollIntoView();
 }
-function leaveHTML(){
+function privateHTML(a,i){
     document.querySelector(".feed").innerHTML+=`
-    <div class="messageBox grey">
-        <h1><strong>fulano</strong> saiu do chat</h1>
+    <div id="${i}"class="messageBox pink">
+        <h2>(${a.time})</h2><h1> <strong>${a.from}</strong> reservadamente para <strong>${a.to}</strong>: ${a.text}</h1>
     </div>`
+    document.getElementById(i).scrollIntoView();
 }
-function privateHTML(){
+function messageAllHTML(a,i){
     document.querySelector(".feed").innerHTML+=`
-    <div class="messageBox pink">
-        <h1><strong>klaus</strong> reservadamente para <strong>Carol</strong>: Ola gata, vamos tc?</h1>
+    <div id="${i}" class="messageBox white">
+        <h2>(${a.time}) </h2><h1> <strong>${a.from}</strong> para <strong>todos</strong>: ${a.text} </h1>
     </div>`
+    document.getElementById(i).scrollIntoView();
 }
-function messageAllHTML(){
-    document.querySelector(".feed").innerHTML+=`
-    <div class="messageBox white">
-        <h1><strong>fulano</strong> para <strong>todos</strong>: mensagem </h1>
-    </div>`
+function sendMessage(){
+    let messageToSend=document.querySelector(".message").value;
+    let dataSendMessage={
+        from: username,
+        to: "Todos",
+        text: messageToSend,
+        type: "message" // ou "private_message" para o bônus
+    };
+    axios.post('https://mock-api.driven.com.br/api/v6/uol/messages',dataSendMessage);
 }
-
-

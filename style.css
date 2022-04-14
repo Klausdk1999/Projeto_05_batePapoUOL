@@ -29,6 +29,7 @@ h2{
 }
 ion-icon{
   margin-right: 10px;
+  cursor: pointer;
 }
 .header{
   padding:15px;
@@ -167,4 +168,7 @@ ion-icon{
 }
 .displayNone{
   display: none;
+}
+::-webkit-input-placeholder {
+  font-style: italic;
 }

@@ -54,14 +54,13 @@ function joinLeaveHTML(a,i){
     document.getElementById(i).scrollIntoView();
 }
 function privateHTML(a,i){
-    if(a.to=="Todos" ||a.to==username){
+    if(a.to=="Todos" || a.to==username || a.from==username){
         document.querySelector(".feed").innerHTML+=`
         <div id="${i}"class="messageBox pink">
             <h2>(${a.time})</h2><h1> <strong>${a.from}</strong> reservadamente para <strong>${a.to}</strong>: ${a.text}</h1>
         </div>`
         document.getElementById(i).scrollIntoView();
     }
-    
 }
 function messageAllHTML(a,i){
     document.querySelector(".feed").innerHTML+=`
@@ -78,7 +77,11 @@ function sendMessage(){
         text: messageToSend,
         type: messageType // ou "private_message" para o bônus
     };
-    axios.post('https://mock-api.driven.com.br/api/v6/uol/messages',dataSendMessage);
+    let promisse=axios.post('https://mock-api.driven.com.br/api/v6/uol/messages',dataSendMessage);
+    promisse.catch(reload);
+}
+function reload(){
+    window.location.reload();
 }
 function sendScreen(){
     let promise=axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
@@ -86,29 +89,39 @@ function sendScreen(){
     promise.then(listHTML);
 }
 function listHTML(user){
-    console.log(user.data[0]);
-    for(let i=0;i<user.data.length;i++){
-        document.querySelector(".userList").innerHTML+=`
-        <div class="spaceBetween" onclick="selectUserToSend(this)">
+    document.querySelector(".userList").innerHTML+=`
+        <div  class="spaceBetween">
             <div class="user"> 
             <ion-icon name="person-circle"></ion-icon>
-            <h1> ${user.data[i].name}</h1>
+            <h1 onclick="selectUserToSend(this)" id="clickedUser">Todos</h1>
+            </div>
+            <ion-icon class=""id="checkmark" name="checkmark"></ion-icon>
+        </div>`;
+    for(let i=0;i<user.data.length;i++){
+        document.querySelector(".userList").innerHTML+=`
+        <div  class="spaceBetween">
+            <div class="user"> 
+            <ion-icon name="person-circle"></ion-icon>
+            <h1 onclick="selectUserToSend(this)" id="clickedUser"> ${user.data[i].name}</h1>
             </div>
             <ion-icon class=""id="checkmark" name="checkmark"></ion-icon>
         </div>`;
     } 
 }
 function selectUserToSend(element){
-   // element.querySelector(".displayNone").classList.toggle("displayNone");
-
+    messageTo=element.innerText;
+    sendInfo();
 }
 function private(element){
-    selectUserToSend(element);
     messageType="private_message";
+    sendInfo();
 }
 function public(element){
-    selectUserToSend(element);
     messageType="message";
+    sendInfo();
+}
+function sendInfo(){
+   document.querySelector(".message").placeholder=`Escreva aqui... Enviando para ${messageTo} uma ${messageType}`;
 }
 
 

@@ -70,6 +70,11 @@ function messageAllHTML(a,i){
     </div>`
     document.getElementById(i).scrollIntoView();
 }
+function sendOnEnter(){
+    if(event.key === 'Enter') {
+        sendMessage();        
+    }
+}
 function sendMessage(){
     let messageToSend=document.querySelector(".message").value;
     document.querySelector(".message").value="";
@@ -132,7 +137,7 @@ function sendInfo(){
         document.getElementById(lastMessageTo).style.display="none";
     }
     document.getElementById(messageTo).style.display="block";
-    document.querySelector(".message").placeholder=`Escreva aqui... Enviando para ${messageTo} uma ${messageType}`;
+    document.querySelector(".message").placeholder=`Escreva aqui...     Enviando para ${messageTo} uma ${messageType}`;
     lastMessageTo=messageTo;
 }
 

@@ -71,6 +71,7 @@ function messageAllHTML(a,i){
 }
 function sendMessage(){
     let messageToSend=document.querySelector(".message").value;
+    document.querySelector(".message").value="";
     let dataSendMessage={
         from: username,
         to: messageTo,
@@ -80,8 +81,10 @@ function sendMessage(){
     let promisse=axios.post('https://mock-api.driven.com.br/api/v6/uol/messages',dataSendMessage);
     promisse.catch(reload);
 }
-function reload(){
-    window.location.reload();
+function reload(err){
+    if(err.status!=200){
+        window.location.reload();
+    }
 }
 function sendScreen(){
     let promise=axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');

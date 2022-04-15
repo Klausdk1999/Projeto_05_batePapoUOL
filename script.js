@@ -6,6 +6,7 @@ let data={
     name: ""
 };
 let array=[];
+let lastMessageTo;
 function joinChat(){
     username=document.getElementById("usernameInput").value;
     data={
@@ -82,14 +83,13 @@ function sendMessage(){
     promisse.catch(reload);
 }
 function reload(err){
-    if(err.status!=200){
-        window.location.reload();
-    }
+    window.location.reload();
 }
 function sendScreen(){
     let promise=axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
     document.querySelector(".sendScreen").classList.toggle("displayNone");
     promise.then(listHTML);
+    sendInfo();
 }
 function listHTML(user){
     document.querySelector(".userList").innerHTML+=`
@@ -98,7 +98,7 @@ function listHTML(user){
             <ion-icon name="person-circle"></ion-icon>
             <h1 onclick="selectUserToSend(this)" id="clickedUser">Todos</h1>
             </div>
-            <ion-icon class=""id="checkmark" name="checkmark"></ion-icon>
+            <ion-icon class="displayNone green" id="Todos" name="checkmark"></ion-icon>
         </div>`;
     for(let i=0;i<user.data.length;i++){
         document.querySelector(".userList").innerHTML+=`
@@ -107,7 +107,7 @@ function listHTML(user){
             <ion-icon name="person-circle"></ion-icon>
             <h1 onclick="selectUserToSend(this)" id="clickedUser"> ${user.data[i].name}</h1>
             </div>
-            <ion-icon class=""id="checkmark" name="checkmark"></ion-icon>
+            <ion-icon class="displayNone green" id="${user.data[i].name}" name="checkmark"></ion-icon>
         </div>`;
     } 
 }
@@ -117,14 +117,23 @@ function selectUserToSend(element){
 }
 function private(element){
     messageType="private_message";
+    document.getElementById("lock-closed").style.display="block";
+    document.getElementById("lock-open").style.display="none";
     sendInfo();
 }
-function public(element){
+function public(){
+    document.getElementById("lock-closed").style.display="none";
+    document.getElementById("lock-open").style.display="block";
     messageType="message";
     sendInfo();
 }
 function sendInfo(){
-   document.querySelector(".message").placeholder=`Escreva aqui... Enviando para ${messageTo} uma ${messageType}`;
+    if(lastMessageTo!=null){
+        document.getElementById(lastMessageTo).style.display="none";
+    }
+    document.getElementById(messageTo).style.display="block";
+    document.querySelector(".message").placeholder=`Escreva aqui... Enviando para ${messageTo} uma ${messageType}`;
+    lastMessageTo=messageTo;
 }
 
 

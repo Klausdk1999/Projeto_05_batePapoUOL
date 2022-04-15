@@ -80,7 +80,12 @@ ion-icon{
   background-color: #FFFFFF;
 }
 .green{
+  font-weight: 700;
   color: green;
+}
+.personIcon{
+  width: 30px;
+  height: 25px;
 }
 .bottom{
   padding:15px;
@@ -161,6 +166,8 @@ ion-icon{
   overflow-y: scroll;
 }
 .user{
+  cursor: pointer;
+  height: 30px;
   margin:3px;
   display: flex;
   align-items: center;

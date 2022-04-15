@@ -6,7 +6,7 @@ let data={
     name: ""
 };
 let array=[];
-let lastMessageTo;
+let lastMessageTo="Todos";
 function joinChat(){
     username=document.getElementById("usernameInput").value;
     data={
@@ -77,7 +77,7 @@ function sendMessage(){
         from: username,
         to: messageTo,
         text: messageToSend,
-        type: messageType // ou "private_message" para o bônus
+        type: messageType
     };
     let promisse=axios.post('https://mock-api.driven.com.br/api/v6/uol/messages',dataSendMessage);
     promisse.catch(reload);
@@ -95,19 +95,19 @@ function listHTML(user){
     document.querySelector(".userList").innerHTML+=`
         <div  class="spaceBetween">
             <div class="user"> 
-            <ion-icon name="person-circle"></ion-icon>
+            <ion-icon class="personIcon" name="person-circle"></ion-icon>
             <h1 onclick="selectUserToSend(this)" id="clickedUser">Todos</h1>
             </div>
-            <ion-icon class="displayNone green" id="Todos" name="checkmark"></ion-icon>
+            <ion-icon class="displayNone green personIcon" id="Todos" name="checkmark"></ion-icon>
         </div>`;
     for(let i=0;i<user.data.length;i++){
         document.querySelector(".userList").innerHTML+=`
         <div  class="spaceBetween">
             <div class="user"> 
-            <ion-icon name="person-circle"></ion-icon>
+            <ion-icon class="personIcon" name="person-circle"></ion-icon>
             <h1 onclick="selectUserToSend(this)" id="clickedUser"> ${user.data[i].name}</h1>
             </div>
-            <ion-icon class="displayNone green" id="${user.data[i].name}" name="checkmark"></ion-icon>
+            <ion-icon class="displayNone green personIcon" id="${user.data[i].name}" name="checkmark"></ion-icon>
         </div>`;
     } 
 }
@@ -128,7 +128,7 @@ function public(){
     sendInfo();
 }
 function sendInfo(){
-    if(lastMessageTo!=null){
+    if(lastMessageTo!==messageTo){
         document.getElementById(lastMessageTo).style.display="none";
     }
     document.getElementById(messageTo).style.display="block";
